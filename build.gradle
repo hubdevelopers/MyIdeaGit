@@ -1,0 +1,66 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+
+        classpath "org.akhikhl.gretty:gretty:2.0.0"
+    }
+}
+apply plugin :'java'
+apply plugin :'war'
+//单引号双引号皆可以
+apply plugin :"idea"
+apply plugin :"maven"
+apply plugin: 'org.akhikhl.gretty'
+
+
+gretty {
+    httpPort = 8091
+    contextPath = '/MyGradleWebDemo'
+    host = "localhost"
+    httpEnabled = true
+    servletContainer = 'tomcat8'
+    //热部署 单位秒 tomcat每秒查询一下是否修改了文件，如果修改了立马生效
+    scanInterval = 1
+    fastReload = true
+    loggingLevel = 'Debug'
+    consoleLogEnabled = true
+    //默认5005
+    debugPort = 8888
+    debugSuspend =true
+}
+
+//这种默认的方式可以，上面的也可以
+//plugins {
+//    id 'java'
+//    id 'war'
+//}
+
+group 'com.lym.gradle'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+//这个可以不配置，默认就是1.8
+targetCompatibility = 1.8
+//私服
+//dependencies {
+//    repositories {
+//        maven{
+//            url:XXX
+//        }
+//    }
+//}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.mybatis', name: 'mybatis', version: '3.5.2'
+}
+tasks.withType(JavaCompile){
+    options.encoding = 'UTF-8'
+}
+[compileJava,javadoc,compileTestJava]*.options*.encoding = 'UTF-8'
